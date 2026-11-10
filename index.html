@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <meta name="description" content="Un espacio abierto para leer, aprender y compartir. Descubre la biblioteca digital de tu comunidad.">
+  <title>La Página Abierta — Biblioteca digital comunitaria</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f5f0;
+      --ink: #1e332c;
+      --muted: #65756d;
+      --green: #245c45;
+      --green-dark: #193f32;
+      --lime: #d7ed9b;
+      --line: #e2e4dc;
+      --white: #fffefa;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button, input, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+
+    .topbar {
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(30, 51, 44, .09);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 21px;
+      letter-spacing: -.5px;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      background: var(--green);
+      color: var(--lime);
+      border-radius: 12px 12px 12px 4px;
+    }
+    .brand-mark svg { width: 22px; height: 22px; }
+    .nav { display: flex; align-items: center; gap: 34px; }
+    .nav a {
+      color: #53645b;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color .2s ease;
+    }
+    .nav a:hover { color: var(--green); }
+    .nav .nav-cta {
+      padding: 12px 19px;
+      border-radius: 999px;
+      background: var(--green);
+      color: white;
+    }
+    .nav .nav-cta:hover { background: var(--green-dark); color: white; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr .93fr;
+      gap: 58px;
+      align-items: center;
+      padding: 70px 0 76px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 20px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 23px;
+      height: 1px;
+      background: currentColor;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 580px;
+      margin-bottom: 21px;
+      font-family: var(--serif);
+      font-size: clamp(48px, 6vw, 75px);
+      line-height: .99;
+      letter-spacing: -3.4px;
+      font-weight: 500;
+    }
+    h1 em { color: var(--green); font-weight: 500; }
+    .hero-copy {
+      max-width: 465px;
+      margin-bottom: 29px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+    .button {
+      min-height: 49px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 21px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .button:hover { background: var(--green-dark); transform: translateY(-2px); }
+    .button svg { width: 16px; height: 16px; }
+    .hero-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-left: 17px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: #79a94b;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px #e6efd9;
+    }
+    .hero-visual {
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 48% 48% 18px 18px;
+      background: #d7dbcd;
+    }
+    .hero-visual img { width: 100%; height: 100%; min-height: 400px; display: block; object-fit: cover; }
+    .image-caption {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 15px 11px 11px;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 14px;
+      background: rgba(255, 254, 250, .91);
+      backdrop-filter: blur(12px);
+    }
+    .caption-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--lime);
+      color: var(--green-dark);
+    }
+    .caption-icon svg { width: 17px; height: 17px; }
+    .image-caption strong { display: block; font-size: 12px; }
+    .image-caption span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat { padding: 0 30px; border-right: 1px solid var(--line); }
+    .stat:first-child { padding-left: 0; }
+    .stat:last-child { border: 0; }
+    .stat strong { display: block; font-family: var(--serif); font-size: 27px; font-weight: 500; }
+    .stat span { color: var(--muted); font-size: 12px; }
+
+    .section { padding: 84px 0; }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 29px;
+    }
+    .section-head .eyebrow { margin-bottom: 12px; }
+    h2 {
+      margin-bottom: 0;
+      font-family: var(--serif);
+      font-size: clamp(34px, 4vw, 46px);
+      font-weight: 500;
+      letter-spacing: -1.4px;
+      line-height: 1.1;
+    }
+    .section-intro { max-width: 345px; margin-bottom: 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .catalog-controls { margin-bottom: 26px; }
+    .search-wrap { position: relative; max-width: 360px; margin-bottom: 18px; }
+    .search-wrap svg {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      width: 17px;
+      height: 17px;
+      transform: translateY(-50%);
+      color: #78857d;
+      pointer-events: none;
+    }
+    .search-wrap input {
+      width: 100%;
+      height: 46px;
+      padding: 0 16px 0 43px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      outline: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .search-wrap input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(36, 92, 69, .1); }
+    .filters { display: flex; flex-wrap: wrap; gap: 9px; }
+    .filter {
+      padding: 9px 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      color: #5a6b61;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all .2s ease;
+    }
+    .filter:hover, .filter.active { border-color: var(--green); background: var(--green); color: white; }
+    .book-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .book-card {
+      min-width: 0;
+      padding: 12px 12px 16px;
+      border: 1px solid #e8e8e1;
+      border-radius: 16px;
+      background: var(--white);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .book-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(31, 54, 43, .08); }
+    .book-cover { width: 100%; height: 172px; display: block; object-fit: cover; border-radius: 10px; background: #e6e3d8; }
+    .book-category {
+      display: inline-block;
+      margin: 15px 0 8px;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .book-card h3 { margin-bottom: 5px; font-family: var(--serif); font-size: 19px; font-weight: 500; letter-spacing: -.3px; }
+    .book-card p { margin-bottom: 13px; color: var(--muted); font-size: 12px; }
+    .book-link { color: var(--green); font-size: 12px; font-weight: 700; text-decoration: none; }
+    .book-link:hover { text-decoration: underline; }
+    .empty-state { display: none; padding: 32px; border-radius: 14px; background: var(--white); color: var(--muted); text-align: center; }
+
+    .community {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      min-height: 335px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: var(--green-dark);
+      color: white;
+    }
+    .community-copy { z-index: 1; align-self: center; padding: 48px 52px; }
+    .community .eyebrow { color: var(--lime); }
+    .community h2 { max-width: 400px; margin-bottom: 16px; }
+    .community-copy > p:not(.eyebrow) { max-width: 400px; margin-bottom: 25px; color: rgba(255,255,255,.72); font-size: 14px; line-height: 1.7; }
+    .button-light { background: var(--lime); color: var(--green-dark); }
+    .button-light:hover { background: #e6f4c3; color: var(--green-dark); }
+    .community-image { min-height: 335px; }
+    .community-image img { width: 100%; height: 100%; display: block; object-fit: cover; opacity: .84; }
+
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+    .how-card { padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,254,250,.5); }
+    .step-number {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      background: #e6efd9;
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 17px;
+    }
+    .how-card h3 { margin-bottom: 8px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+    .how-card p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+    .contact {
+      display: grid;
+      grid-template-columns: .82fr 1.18fr;
+      gap: 60px;
+      padding: 58px;
+      border-radius: 22px;
+      background: #e9eee2;
+    }
+    .contact-info h2 { margin-bottom: 15px; }
+    .contact-info > p:not(.eyebrow) { max-width: 330px; margin-bottom: 25px; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .contact-detail { display: flex; align-items: center; gap: 11px; margin-top: 14px; color: var(--green-dark); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .contact-detail svg { width: 17px; height: 17px; }
+    .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: center; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field-full { grid-column: 1 / -1; }
+    .field label { color: #4a5e53; font-size: 11px; font-weight: 700; }
+    .field input, .field textarea {
+      width: 100%;
+      border: 1px solid #d5ddd1;
+      border-radius: 10px;
+      outline: 0;
+      background: rgba(255,254,250,.86);
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .field input { height: 44px; padding: 0 13px; }
+    .field textarea { min-height: 95px; padding: 12px 13px; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(36, 92, 69, .1); }
+    .contact-form .button { justify-self: start; cursor: pointer; }
+    .form-note { grid-column: 1 / -1; margin: -4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    footer { padding: 26px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .footer-inner p { margin: 0; color: var(--muted); font-size: 11px; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { color: var(--muted); font-size: 11px; text-decoration: none; }
+    .footer-links a:hover { color: var(--green); }
+
+    :focus-visible { outline: 3px solid #86a96e; outline-offset: 3px; }
+    @media (max-width: 850px) {
+      .hero { gap: 30px; padding: 54px 0 60px; }
+      .hero-visual, .hero-visual img { min-height: 340px; }
+      .book-grid { grid-template-columns: repeat(2, 1fr); }
+      .book-cover { height: 210px; }
+      .contact { gap: 35px; padding: 38px; }
+    }
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 34px, 500px); }
+      .topbar { height: 70px; }
+      .brand { font-size: 18px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .nav { gap: 0; }
+      .nav a:not(.nav-cta) { display: none; }
+      .nav .nav-cta { padding: 10px 15px; font-size: 12px; }
+      .hero { grid-template-columns: 1fr; gap: 29px; padding: 50px 0 41px; }
+      h1 { max-width: 450px; font-size: clamp(48px, 13vw, 66px); letter-spacing: -2.7px; }
+      .hero-copy { font-size: 14px; }
+      .hero-note { display: flex; margin: 18px 0 0 3px; }
+      .hero-visual { min-height: 300px; border-radius: 43% 43% 16px 16px; }
+      .hero-visual img { min-height: 300px; }
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 18px 0; padding: 21px 0; }
+      .stat { padding: 0 15px; }
+      .stat:first-child, .stat:nth-child(3) { padding-left: 0; }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat strong { font-size: 24px; }
+      .section { padding: 61px 0; }
+      .section-head { display: block; margin-bottom: 24px; }
+      .section-intro { margin-top: 13px; }
+      .search-wrap { max-width: none; }
+      .book-grid { gap: 11px; }
+      .book-card { padding: 8px 8px 13px; border-radius: 13px; }
+      .book-cover { height: 155px; border-radius: 8px; }
+      .book-card h3 { font-size: 17px; }
+      .book-card p { font-size: 11px; }
+      .book-category { margin-top: 12px; font-size: 9px; }
+      .community { grid-template-columns: 1fr; }
+      .community-copy { padding: 35px 27px 30px; }
+      .community-image { min-height: 190px; max-height: 220px; }
+      .how-grid { grid-template-columns: 1fr; gap: 11px; margin-top: 22px; }
+      .how-card { padding: 19px; }
+      .step-number { margin-bottom: 13px; }
+      .contact { grid-template-columns: 1fr; gap: 29px; padding: 29px 21px; }
+      .contact-form { gap: 12px; }
+      .field:not(.field-full) { grid-column: 1 / -1; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-links { gap: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <a class="brand" href="#" aria-label="La Página Abierta, inicio">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14M12 7C9.5 4.7 6.5 4 3 4v14c3.5 0 6.5.7 9 3m0-14c2.5-2.3 5.5-3 9-3v14c-3.5 0-6.5.7-9 3"/></svg>
+      </span>
+      La Página Abierta
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#biblioteca">La biblioteca</a>
+      <a href="#comunidad">Comunidad</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a class="nav-cta" href="#contacto">Hablemos <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Leer nos conecta</p>
+        <h1 id="hero-title">Un mundo de historias, <em>a un clic.</em></h1>
+        <p class="hero-copy">Libros, ideas y saberes para compartir. Somos una biblioteca digital hecha por y para nuestra comunidad: abierta, cercana y para todas las edades.</p>
+        <a class="button" href="#biblioteca">
+          Explorar la biblioteca
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </a>
+        <div class="hero-note"><span class="online-dot" aria-hidden="true"></span> Acceso libre, desde donde estés</div>
+      </div>
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1100&q=85" alt="Estanterías de una biblioteca luminosa llena de libros" fetchpriority="high">
+        <div class="image-caption">
+          <span class="caption-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+          </span>
+          <span><strong>Un lugar para cada historia</strong><span>Tu próxima lectura te espera</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap stats" aria-label="Nuestra biblioteca en números">
+      <div class="stat"><strong>Siempre</strong><span>abierta para explorar</span></div>
+      <div class="stat"><strong>A tu alcance</strong><span>desde celular o computadora</span></div>
+      <div class="stat"><strong>En comunidad</strong><span>historias y saberes compartidos</span></div>
+      <div class="stat"><strong>Para todos</strong><span>edades y curiosidades</span></div>
+    </section>
+
+    <section class="wrap section" id="biblioteca" aria-labelledby="library-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Una selección para ti</p>
+          <h2 id="library-title">Encuentra tu próxima lectura</h2>
+        </div>
+        <p class="section-intro">Explora nuestra colección y déjate llevar por ese tema que siempre quisiste conocer.</p>
+      </div>
+      <div class="catalog-controls">
+        <label class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="book-search" type="search" placeholder="Busca un libro o tema..." aria-label="Buscar en la colección">
+        </label>
+        <div class="filters" role="group" aria-label="Filtrar por categoría">
+          <button class="filter active" type="button" data-filter="todos" aria-pressed="true">Todo</button>
+          <button class="filter" type="button" data-filter="ficcion" aria-pressed="false">Ficción</button>
+          <button class="filter" type="button" data-filter="bienestar" aria-pressed="false">Bienestar</button>
+          <button class="filter" type="button" data-filter="ciencia" aria-pressed="false">Ciencia</button>
+          <button class="filter" type="button" data-filter="infantil" aria-pressed="false">Infantil</button>
+        </div>
+      </div>
+      <div class="book-grid" id="book-grid">
+        <article class="book-card" data-category="ficcion" data-search="el jardín secreto frances hodgson burnett ficción novela clásicos">
+          <img class="book-cover" src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80" alt="Libros apilados junto a una taza de café" loading="lazy">
+          <span class="book-category">Ficción · Clásicos</span>
+          <h3>El jardín secreto</h3>
+          <p>Frances Hodgson Burnett</p>
+          <a class="book-link" href="https://www.gutenberg.org/ebooks/113" target="_blank" rel="noopener noreferrer">Descubrir el libro <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="book-card" data-category="bienestar" data-search="el arte de la calma bienestar hábitos vida cotidiana">
+          <img class="book-cover" src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=600&q=80" alt="Libro abierto en una mesa junto a una ventana" loading="lazy">
+          <span class="book-category">Bienestar · Ideas</span>
+          <h3>El arte de la calma</h3>
+          <p>Una pausa para reconectar</p>
+          <a class="book-link" href="#contacto">Conocer más <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="book-card" data-category="ciencia" data-search="cosmos carl sagan ciencia universo astronomía espacio">
+          <img class="book-cover" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=600&q=80" alt="Cielo nocturno lleno de estrellas" loading="lazy">
+          <span class="book-category">Ciencia · Universo</span>
+          <h3>Cosmos</h3>
+          <p>Carl Sagan</p>
+          <a class="book-link" href="https://archive.org/details/cosmoscarl00saga" target="_blank" rel="noopener noreferrer">Explorar el universo <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="book-card" data-category="infantil" data-search="cuentos para imaginar infantil lectura familia creatividad">
+          <img class="book-cover" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" alt="Colección de libros coloridos" loading="lazy">
+          <span class="book-category">Infantil · Imaginación</span>
+          <h3>Cuentos para imaginar</h3>
+          <p>Historias para compartir</p>
+          <a class="book-link" href="#contacto">Conocer más <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+      <p class="empty-state" id="empty-state" role="status">No encontramos lecturas con esos criterios. Prueba otra búsqueda.</p>
+    </section>
+
+    <section class="wrap" id="comunidad" aria-labelledby="community-title">
+      <div class="community">
+        <div class="community-copy">
+          <p class="eyebrow">Más que libros</p>
+          <h2 id="community-title">Una comunidad que crece leyendo.</h2>
+          <p>Compartimos recomendaciones, organizamos encuentros y abrimos espacios para que cada voz tenga un lugar. Porque las mejores historias también se construyen en compañía.</p>
+          <a class="button button-light" href="#contacto">Súmate a la comunidad <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="community-image">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=85" alt="Amigas y amigos reunidos al aire libre compartiendo un momento" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="como-funciona" aria-labelledby="how-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Así de sencillo</p>
+          <h2 id="how-title">Tu próxima historia, en tres pasos</h2>
+        </div>
+      </div>
+      <div class="how-grid">
+        <article class="how-card">
+          <span class="step-number">01</span>
+          <h3>Explora</h3>
+          <p>Busca por tema, descubre nuevas voces o déjate sorprender por nuestras recomendaciones.</p>
+        </article>
+        <article class="how-card">
+          <span class="step-number">02</span>
+          <h3>Elige</h3>
+          <p>Encuentra una lectura que te acompañe. Hay opciones para cada edad, momento y curiosidad.</p>
+        </article>
+        <article class="how-card">
+          <span class="step-number">03</span>
+          <h3>Comparte</h3>
+          <p>Cuéntanos qué te gustó, recomienda un libro o propón una actividad para la comunidad.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="contacto" aria-labelledby="contact-title">
+      <div class="contact">
+        <div class="contact-info">
+          <p class="eyebrow">Estamos para escucharte</p>
+          <h2 id="contact-title">¿Hablamos?</h2>
+          <p>¿Tienes una recomendación, una pregunta o ganas de colaborar? Escríbenos. Nos encantará leerte.</p>
+          <a class="contact-detail" href="mailto:hola@tucomunidad.org">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            hola@tucomunidad.org
+          </a>
+          <a class="contact-detail" href="#biblioteca">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20m-10-10a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg>
+            Abierta desde cualquier lugar
+          </a>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <div class="field">
+            <label for="name">Tu nombre</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="¿Cómo te llamas?" required>
+          </div>
+          <div class="field">
+            <label for="email">Tu correo</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="nombre@ejemplo.com" required>
+          </div>
+          <div class="field field-full">
+            <label for="message">Tu mensaje</label>
+            <textarea id="message" name="message" placeholder="Cuéntanos, te leemos..." required></textarea>
+          </div>
+          <button class="button" type="submit">Preparar mensaje <span aria-hidden="true">↗</span></button>
+          <p class="form-note">Se abrirá tu aplicación de correo para que puedas revisar y enviar el mensaje.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> La Página Abierta · Leer nos conecta.</p>
+      <div class="footer-links">
+        <a href="#biblioteca">La biblioteca</a>
+        <a href="#comunidad">Comunidad</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const searchInput = document.querySelector("#book-search");
+    const filterButtons = [...document.querySelectorAll(".filter")];
+    const bookCards = [...document.querySelectorAll(".book-card")];
+    const emptyState = document.querySelector("#empty-state");
+    let activeCategory = "todos";
+
+    function updateBooks() {
+      const query = searchInput.value.trim().toLocaleLowerCase("es");
+      let visibleCount = 0;
+
+      for (const card of bookCards) {
+        const matchesCategory = activeCategory === "todos" || card.dataset.category === activeCategory;
+        const matchesQuery = card.dataset.search.toLocaleLowerCase("es").includes(query);
+        const visible = matchesCategory && matchesQuery;
+        card.hidden = !visible;
+        if (visible) visibleCount += 1;
+      }
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    }
+
+    for (const button of filterButtons) {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.filter;
+        for (const item of filterButtons) {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        }
+        updateBooks();
+      });
+    }
+
+    searchInput.addEventListener("input", updateBooks);
+    document.querySelector("#contact-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const subject = `Mensaje para La Página Abierta — ${formData.get("name")}`;
+      const body = [
+        `Nombre: ${formData.get("name")}`,
+        `Correo: ${formData.get("email")}`,
+        "",
+        formData.get("message")
+      ].join("\n");
+      window.location.href = `mailto:hola@tucomunidad.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+    document.querySelector("#year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
